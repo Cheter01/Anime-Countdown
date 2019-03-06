@@ -38,7 +38,7 @@ img {
 
 body {
 	background: #fff;
-	color: #E2E4E3;
+	color: #444444;
 	font-family: 'Roboto', sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-webkit-text-size-adjust: 100%;
@@ -62,7 +62,7 @@ h1 {
 	font-weight: 800;
 	line-height: 80px;
 	letter-spacing: -0.08em;
-	color: #E2E4E3; 
+	color: #222222; 
 }
 
 h2 {
@@ -71,7 +71,7 @@ h2 {
 	line-height: 1em;
 	letter-spacing: 0.2em;
 	text-transform: uppercase;
-	color: #E2E4E3;
+	color: #222222;
 }
 
 #countdown div span {
@@ -99,8 +99,8 @@ h2 {
 -------------------------------------------------------------- */
 
 .sphere {
-	opacity: 0.5;
-  	filter: alpha(opacity=50);
+	opacity: 0.2;
+  	filter: alpha(opacity=20);
 }
 
 .wrapper {
