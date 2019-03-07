@@ -73,7 +73,10 @@ $('#countdown').countdown({
 	//date: "March 13, 2019 17:30:00",
 	date : get_data(),
 	render: function(data) {
-		// console.log(data);
+		//console.log(data);
+		if(data.days == 0 && data.hours == 0 && data.min == 0 && data.sec == 0){
+			location.reload(true);
+		}
 	  var el = $(this.el);
 	  el.empty()
 	    //.append("<div>" + this.leadingZeros(data.years, 4) + "<span>years</span></div>")
