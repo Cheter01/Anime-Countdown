@@ -1,14 +1,14 @@
 var anime = [
-{nome:"Black Clover", data_inizio:"2017-10-03 13:00:00", episodi:103, bkgImage:"url('images/anime_bk/Black-Clover.png')"},
-{nome:"Sword Art Online: Alicization", data_inizio:"2018-10-06 21:00:00", episodi:999999, bkgImage:"url('images/anime_bk/Sword-Art-Online-Alicization.png')"}, //TODO: numero episodi ignoto
-{nome:"Tensei shitara Slime Datta Ken", data_inizio:"2018-10-01 18:00:00", episodi:25, bkgImage:"url('images/anime_bk/Tensei-shitara-Slime-Datta-Ken.jpg')"},
-{nome:"The Rising of the Shield Hero", data_inizio:"2019-01-09 17:30:00", episodi:25, bkgImage:"url('images/anime_bk/The-Rising-of-the-Shield-Hero.jpg')"},
-{nome:"Dororo", data_inizio:"2019-01-09 18:00:00", episodi:999999, bkgImage:"url('images/anime_bk/Dororo.jpg')"}, //TODO: numero episodi ignoto
-{nome:"The Promised Neverland", data_inizio:"2019-01-10 20:00:00", episodi:12, bkgImage:"url('images/anime_bk/The-Promised-Neverland.png')"},
-{nome:"Kakegurui XX", data_inizio:"2019-01-08 18:00:00", episodi:999999, bkgImage:"url('images/anime_bk/Kakegurui-XX.png')"}, //TODO: numero episodi ignoto
-{nome:"Toaru Majutsu no Index III", data_inizio:"2018-10-05 17:00:00", episodi:26, bkgImage:"url('images/anime_bk/Toaru-Majutsu-no-Index-III.jpg')"},
-{nome:"Date A Live 3", data_inizio:"2019-01-13 18:00:00", episodi:26, bkgImage:"url('images/anime_bk/Date-A-Live-3.jpg')"},
-{nome:"JoJo no Kimyou na Bouken: Ougon no Kaze", data_inizio:"2018-10-05 21:00:00", episodi:39, bkgImage:"url('images/anime_bk/JoJo.jpg')"}
+{nome:"Black Clover", date:"2017-10-03 13:00:00", episodi:103, bkgImage:"url('images/anime_bk/Black-Clover.png')"},
+{nome:"Sword Art Online: Alicization", date:"2018-10-06 21:00:00", episodi:999999, bkgImage:"url('images/anime_bk/Sword-Art-Online-Alicization.png')"}, //TODO: numero episodi ignoto
+{nome:"Tensei shitara Slime Datta Ken", date:"2018-10-01 18:00:00", episodi:25, bkgImage:"url('images/anime_bk/Tensei-shitara-Slime-Datta-Ken.jpg')"},
+{nome:"The Rising of the Shield Hero", date:"2019-01-09 17:30:00", episodi:25, bkgImage:"url('images/anime_bk/The-Rising-of-the-Shield-Hero.jpg')"},
+{nome:"Dororo", date:"2019-01-09 18:00:00", episodi:999999, bkgImage:"url('images/anime_bk/Dororo.jpg')"}, //TODO: numero episodi ignoto
+{nome:"The Promised Neverland", date:"2019-01-10 20:00:00", episodi:12, bkgImage:"url('images/anime_bk/The-Promised-Neverland.png')"},
+{nome:"Kakegurui XX", date:"2019-01-08 18:00:00", episodi:999999, bkgImage:"url('images/anime_bk/Kakegurui-XX.png')"}, //TODO: numero episodi ignoto
+{nome:"Toaru Majutsu no Index III", date:"2018-10-05 17:00:00", episodi:26, bkgImage:"url('images/anime_bk/Toaru-Majutsu-no-Index-III.jpg')"},
+{nome:"Date A Live 3", date:"2019-01-13 18:00:00", episodi:26, bkgImage:"url('images/anime_bk/Date-A-Live-3.jpg')"},
+{nome:"JoJo no Kimyou na Bouken: Ougon no Kaze", date:"2018-10-05 21:00:00", episodi:39, bkgImage:"url('images/anime_bk/JoJo.jpg')"}
 ];
 
 $(window).load(function(){
@@ -84,41 +84,50 @@ $('#countdown').countdown({
 	}
 });
 
-function get_data(){
-	var bk = 0;
-	var now = new Date();
-	//now.setDate(now.getDate() + 4)
-	var data_target = new Date();
-	data_target.setDate(data_target.getDate() + 7);
-	var data_anime = new Date();
+// calcolo giorni ed errori anime-------------------------------------------------
 
+function get_data(){
+	add_days();
+	riordina_array();
+	//controllo_array();
+	possibili_errori();
+	write_data();
+	var ritorno_data = new Date(anime[0].date)
+	return ritorno_data;
+}
+
+function add_days(){ //aggiunge 7 giorni ad ogni anime per farlo avvicinare a Now per un numero di volte uguale al numero degli episodi
+	var now = new Date();
+	var data_anime = new Date();
 	for (var i = 0; i < anime.length; i++) {
-		data_anime.setTime(Date.parse(anime[i].data_inizio));
+		data_anime.setTime(Date.parse(anime[i].date));
 		for (var j = 0; j < anime[i].episodi; j++) {
 			if(data_anime < now){
 				data_anime.setDate(data_anime.getDate() + 7);
-				anime[i].data_inizio = data_anime.toString();
+				anime[i].date = data_anime.toString();
 			}else{
 				break;
 			}
 		}
-		//console.log("Anime:", anime[i].nome, "\nDate:", anime[i].data_inizio);
-		if(data_anime <= data_target && data_anime > now){
-			bk = i;
-			data_target.setTime(Date.parse(data_anime));
-		}
 	}
-	possibili_errori();
-	write_data(bk);
-	//console.log(now, ", ", data_target);
-	return data_target;
 }
 
-function write_data(n_anime){
+function riordina_array(){
+	anime.sort(function(a,b){
+  		// Turn your strings into dates, and then subtract them
+  		// to get a value that is either negative, positive, or zero.
+ 	 	return new Date(b.date) - new Date(a.date);
+	});
+	anime.reverse();
+}
+
+function write_data(){
 	var title = document.getElementById("titolo_anime");
+	var sub_title = document.getElementById("seguente");
 	var background = document.getElementById("sfondo");
-	title.innerHTML = anime[n_anime].nome;
-	background.style.backgroundImage  = anime[n_anime].bkgImage;
+	title.innerHTML = anime[0].nome;
+	sub_title.innerHTML = "A seguire: " + anime[1].nome;
+	background.style.backgroundImage  = anime[0].bkgImage;
 }
 
 function possibili_errori(){
@@ -128,20 +137,21 @@ function possibili_errori(){
 
 	for (var i = 0; i < anime.length; i++) {
 		for (var j = 0; j < anime.length; j++) {
-			anime1.setTime(Date.parse(anime[i].data_inizio));
-			anime2.setTime(Date.parse(anime[j].data_inizio));
+			anime1.setTime(Date.parse(anime[i].date));
+			anime2.setTime(Date.parse(anime[j].date));
 			if(Math.abs(anime1.getTime() - anime2.getTime()) <= 43200000 && i != j){  //43200000 = 12 ore
-				for (var k = 0; k < anime.length; k++) {
-				 	if(errori[k] != anime[i].nome){
-				 		errori[k] = anime[i].nome
-				 		console.log("!!Possibile errore!!\nAnime:", anime[i].nome, "\nDate:", anime1.toString());
-				 		break;
-				 	}else{
-				 		break;
-				 	}
+				 if(errori != anime[i].nome){
+				 	errori += anime[i].nome
+				 	console.log("!!Possibile errore!!\nAnime:", anime[i].nome, "\nDate:", anime1.toString());
 				}
 			}
 		}
+	}
+}
+
+function controllo_array(){
+	for (var i = 0; i < anime.length; i++) {
+		console.log("Anime:", anime[i].nome, "\nDate:", anime[i].date);
 	}
 }
 
