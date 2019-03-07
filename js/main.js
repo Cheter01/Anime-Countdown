@@ -1,14 +1,14 @@
 var anime = [
 {nome:"Black Clover", data_inizio:"2017-10-03 13:00:00", episodi:103, bkgImage:"url('images/anime_bk/Black-Clover.png')"},
 {nome:"Sword Art Online: Alicization", data_inizio:"2018-10-06 21:00:00", episodi:999999, bkgImage:"url('images/anime_bk/Sword-Art-Online-Alicization.png')"}, //TODO: numero episodi ignoto
-{nome:"Tensei shitara Slime Datta Ken", data_inizio:"2018-10-02 18:00:00", episodi:25, bkgImage:"url('images/anime_bk/Tensei-shitara-Slime-Datta-Ken.jpg')"},
+{nome:"Tensei shitara Slime Datta Ken", data_inizio:"2018-10-01 18:00:00", episodi:25, bkgImage:"url('images/anime_bk/Tensei-shitara-Slime-Datta-Ken.jpg')"},
 {nome:"The Rising of the Shield Hero", data_inizio:"2019-01-09 17:30:00", episodi:25, bkgImage:"url('images/anime_bk/The-Rising-of-the-Shield-Hero.jpg')"},
-{nome:"Dororo", data_inizio:"2019-01-07 18:00:00", episodi:999999, bkgImage:"url('images/anime_bk/Dororo.jpg')"}, //TODO: numero episodi ignoto
+{nome:"Dororo", data_inizio:"2019-01-09 18:00:00", episodi:999999, bkgImage:"url('images/anime_bk/Dororo.jpg')"}, //TODO: numero episodi ignoto
 {nome:"The Promised Neverland", data_inizio:"2019-01-10 20:00:00", episodi:12, bkgImage:"url('images/anime_bk/The-Promised-Neverland.png')"},
 {nome:"Kakegurui XX", data_inizio:"2019-01-08 18:00:00", episodi:999999, bkgImage:"url('images/anime_bk/Kakegurui-XX.png')"}, //TODO: numero episodi ignoto
 {nome:"Toaru Majutsu no Index III", data_inizio:"2018-10-05 17:00:00", episodi:26, bkgImage:"url('images/anime_bk/Toaru-Majutsu-no-Index-III.jpg')"},
 {nome:"Date A Live 3", data_inizio:"2019-01-13 18:00:00", episodi:26, bkgImage:"url('images/anime_bk/Date-A-Live-3.jpg')"},
-{nome:"JoJo no Kimyou na Bouken: Ougon no Kaze", data_inizio:"2018-10-05 18:00:00", episodi:39, bkgImage:"url('images/anime_bk/JoJo.jpg')"}
+{nome:"JoJo no Kimyou na Bouken: Ougon no Kaze", data_inizio:"2018-10-05 21:00:00", episodi:39, bkgImage:"url('images/anime_bk/JoJo.jpg')"}
 ];
 
 $(window).load(function(){
@@ -97,19 +97,20 @@ function get_data(){
 		for (var j = 0; j < anime[i].episodi; j++) {
 			if(data_anime < now){
 				data_anime.setDate(data_anime.getDate() + 7);
+				anime[i].data_inizio = data_anime.toString();
 			}else{
 				break;
 			}
 		}
+		//console.log("Anime:", anime[i].nome, "\nDate:", anime[i].data_inizio);
 		if(data_anime <= data_target && data_anime > now){
 			bk = i;
 			data_target.setTime(Date.parse(data_anime));
-			//console.log(data_target,", ", data_anime);
 		}
 	}
-	
+	possibili_errori();
 	write_data(bk);
-	console.log(now, ", ", data_target);
+	//console.log(now, ", ", data_target);
 	return data_target;
 }
 
@@ -118,6 +119,29 @@ function write_data(n_anime){
 	var background = document.getElementById("sfondo");
 	title.innerHTML = anime[n_anime].nome;
 	background.style.backgroundImage  = anime[n_anime].bkgImage;
-	console.log(anime[n_anime].bkgImage);
+}
+
+function possibili_errori(){
+	var anime1 = new Date();
+	var anime2 = new Date();
+	var errori = [];
+
+	for (var i = 0; i < anime.length; i++) {
+		for (var j = 0; j < anime.length; j++) {
+			anime1.setTime(Date.parse(anime[i].data_inizio));
+			anime2.setTime(Date.parse(anime[j].data_inizio));
+			if(Math.abs(anime1.getTime() - anime2.getTime()) <= 43200000 && i != j){  //43200000 = 12 ore
+				for (var k = 0; k < anime.length; k++) {
+				 	if(errori[k] != anime[i].nome){
+				 		errori[k] = anime[i].nome
+				 		console.log("!!Possibile errore!!\nAnime:", anime[i].nome, "\nDate:", anime1.toString());
+				 		break;
+				 	}else{
+				 		break;
+				 	}
+				}
+			}
+		}
+	}
 }
 
