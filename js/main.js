@@ -11,6 +11,9 @@ var anime = [
 {nome:"JoJo no Kimyou na Bouken: Ougon no Kaze", date:"2018-10-05 21:00:00", episodi:39, bkgImage:"url('images/anime_bk/JoJo.jpg')"}
 ];
 
+var anime_selezionato = 0;
+
+
 $(window).load(function(){
      $('.preloader').fadeOut('slow');
 });
@@ -89,13 +92,16 @@ $('#countdown').countdown({
 
 // calcolo giorni ed errori anime-------------------------------------------------
 
-function get_data(){
+
+
+function get_data(){  //funzione principale
 	add_days();
 	riordina_array();
 	//controllo_array();
 	possibili_errori();
+	costruzione_navigator();
 	write_data();
-	var ritorno_data = new Date(anime[0].date)
+	var ritorno_data = new Date(anime[anime_selezionato].date)
 	return ritorno_data;
 }
 
@@ -129,8 +135,8 @@ function write_data(){
 	var sub_title = document.getElementById("seguente");
 	var background = document.getElementById("sfondo");
 	title.innerHTML = anime[0].nome;
-	sub_title.innerHTML = "A seguire: " + anime[1].nome;
-	background.style.backgroundImage  = anime[0].bkgImage;
+	sub_title.innerHTML = "A seguire: " + anime[anime_selezionato + 1].nome;
+	background.style.backgroundImage  = anime[anime_selezionato].bkgImage;
 }
 
 function possibili_errori(){
@@ -155,6 +161,28 @@ function possibili_errori(){
 function controllo_array(){
 	for (var i = 0; i < anime.length; i++) {
 		console.log("Anime:", anime[i].nome, "\nDate:", anime[i].date);
+	}
+}
+
+function costruzione_navigator(){
+	for (var i = 0; i < anime.length; i++) {
+		var a = document.createElement("A");
+		var text = document.createTextNode(anime[i].nome);
+		a.appendChild(text);
+		a.setAttribute("class", "mdl-navigation__link");
+
+		document.getElementById("navigation").appendChild(a);
+		if(i == 0){
+			var succ = document.createElement("SPAN");
+			var separator = document.createElement("HR");
+			var succ_text = document.createTextNode("Successivi...");
+			//separator.setAttribute("class", "mdl-layout__header-row");
+			succ.setAttribute("class", "mdl-layout-title htitle");
+			succ.appendChild(succ_text);
+
+			document.getElementById("navigation").appendChild(separator);
+			document.getElementById("navigation").appendChild(succ);
+		}
 	}
 }
 
