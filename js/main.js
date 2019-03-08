@@ -142,7 +142,7 @@ function possibili_errori(){
 		for (var j = 0; j < anime.length; j++) {
 			anime1.setTime(Date.parse(anime[i].date));
 			anime2.setTime(Date.parse(anime[j].date));
-			if(Math.abs(anime1.getTime() - anime2.getTime()) <= 43200000 && i != j){  //43200000 = 12 ore
+			if(Math.abs(anime1.getTime() - anime2.getTime()) <= 1800000 && i != j){  //1800000 = 30 minuti
 				 if(errori != anime[i].nome){
 				 	errori += anime[i].nome
 				 	console.log("!!Possibile errore!!\nAnime:", anime[i].nome, "\nDate:", anime1.toString());
