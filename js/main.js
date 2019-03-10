@@ -7,7 +7,7 @@ var anime = [
 {nome:"The Promised Neverland", date:"2019-01-10 20:00:00", episodi:12, bkgImage:"url('images/anime_bk/The-Promised-Neverland.png')"},
 {nome:"Kakegurui XX", date:"2019-01-08 18:00:00", episodi:999999, bkgImage:"url('images/anime_bk/Kakegurui-XX.png')"}, //TODO: numero episodi ignoto
 {nome:"Toaru Majutsu no Index III", date:"2018-10-05 17:00:00", episodi:26, bkgImage:"url('images/anime_bk/Toaru-Majutsu-no-Index-III.jpg')"},
-{nome:"Date A Live 3", date:"2019-01-13 18:00:00", episodi:26, bkgImage:"url('images/anime_bk/Date-A-Live-3.jpg')"},
+{nome:"Date A Live 3", date:"2019-01-14 12:00:00", episodi:26, bkgImage:"url('images/anime_bk/Date-A-Live-3.jpg')"},
 {nome:"JoJo no Kimyou na Bouken: Ougon no Kaze", date:"2018-10-05 21:00:00", episodi:39, bkgImage:"url('images/anime_bk/JoJo.jpg')"}
 ];
 
