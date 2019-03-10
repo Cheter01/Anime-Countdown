@@ -70,7 +70,6 @@ $(window).load(function(){
 });
 /* END ------------------------------------------------------- */
 
-
 $('#countdown').countdown({
 
 	//date: "March 13, 2019 17:30:00",
@@ -186,3 +185,8 @@ function costruzione_navigator(){
 	}
 }
 
+function change_anime(n){
+	anime_selezionato = n;
+	location.reload(true);
+	
+}
