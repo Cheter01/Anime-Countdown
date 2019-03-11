@@ -1,14 +1,16 @@
 var anime = [
 {nome:"Black Clover", date:"2017-10-03 13:00:00", episodi:103, bkgImage:"url('images/anime_bk/Black-Clover.png')"},
 {nome:"Sword Art Online: Alicization", date:"2018-10-06 21:00:00", episodi:999999, bkgImage:"url('images/anime_bk/Sword-Art-Online-Alicization.png')"}, //TODO: numero episodi ignoto
-{nome:"Tensei shitara Slime Datta Ken", date:"2018-10-01 17:03:00", episodi:25, bkgImage:"url('images/anime_bk/Tensei-shitara-Slime-Datta-Ken.jpg')"},
+{nome:"Tensei shitara Slime Datta Ken", date:"2018-10-01 17:30:00", episodi:25, bkgImage:"url('images/anime_bk/Tensei-shitara-Slime-Datta-Ken.jpg')"},
 {nome:"The Rising of the Shield Hero", date:"2019-01-09 17:30:00", episodi:25, bkgImage:"url('images/anime_bk/The-Rising-of-the-Shield-Hero.jpg')"},
 {nome:"Dororo", date:"2019-01-09 18:00:00", episodi:999999, bkgImage:"url('images/anime_bk/Dororo.jpg')"}, //TODO: numero episodi ignoto
 {nome:"The Promised Neverland", date:"2019-01-10 20:00:00", episodi:12, bkgImage:"url('images/anime_bk/The-Promised-Neverland.png')"},
 {nome:"Kakegurui XX", date:"2019-01-08 18:00:00", episodi:999999, bkgImage:"url('images/anime_bk/Kakegurui-XX.png')"}, //TODO: numero episodi ignoto
 {nome:"Toaru Majutsu no Index III", date:"2018-10-05 17:00:00", episodi:26, bkgImage:"url('images/anime_bk/Toaru-Majutsu-no-Index-III.jpg')"},
 {nome:"Date A Live 3", date:"2019-01-13 12:00:00", episodi:26, bkgImage:"url('images/anime_bk/Date-A-Live-3.jpg')"},
-{nome:"JoJo no Kimyou na Bouken: Ougon no Kaze", date:"2018-10-05 21:00:00", episodi:39, bkgImage:"url('images/anime_bk/JoJo.jpg')"}
+{nome:"JoJo no Kimyou na Bouken: Ougon no Kaze", date:"2018-10-05 21:00:00", episodi:39, bkgImage:"url('images/anime_bk/JoJo.jpg')"},
+{nome:"Mob Psycho 100", date:"2019-01-07 18:00:00", episodi:999999, bkgImage:"url('images/anime_bk/Mob-Psycho-100.png')"}, //TODO: numero episodi ignoto
+{nome:"Kaguya-sama wa Kokurasetai", date:"2019-01-13 20:00:00", episodi:12, bkgImage:"url('images/anime_bk/Kaguya-sama-wa-Kokurasetai.jpg')"}
 ];
 
 var anime_selezionato = 0;
@@ -157,7 +159,7 @@ function possibili_errori(){
 	}
 }
 
-function controllo_array(){
+function anime_check(){
 	for (var i = 0; i < anime.length; i++) {
 		console.log("Anime:", anime[i].nome, "\nDate:", anime[i].date);
 	}
