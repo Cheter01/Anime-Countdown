@@ -72,7 +72,7 @@
 					<li class="layer" data-depth="0.20">
 						<div class="title">
 							<h2 id="titolo_anime">
-								The Rising of the Shield Hero
+								
 							</h2>
 							<span class="line"></span>
 						</div>
@@ -87,7 +87,10 @@
                 <li class="layer" data-depth="0.30">
                 	<div class="hero">
                 		<h1 id="countdown">
-
+                			<div></div>
+                			<div></div>
+                			<div></div>
+                			<div></div>
                 		</h1>
 
                 		<p class="sub-title" id="seguente">
@@ -179,9 +182,26 @@
         </div>
     </main>
 </div>
+
+<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.6/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCGvUEiXiu2wWJPg9GhPt9CUCHNsnL1nNk",
+    authDomain: "anime-countdown.firebaseapp.com",
+    databaseURL: "https://anime-countdown.firebaseio.com",
+    projectId: "anime-countdown",
+    storageBucket: "anime-countdown.appspot.com",
+    messagingSenderId: "828812231501"
+  };
+  firebase.initializeApp(config);
+  var db = firebase.firestore();
+</script>
+
 <!-- Javascript -->
 <script src="js/plugins.js"></script> 
-<script src="js/jquery.countdown.min.js"></script> 
 <script src="js/main.js"></script>
 
 </body>

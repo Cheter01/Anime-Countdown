@@ -1,23 +1,12 @@
-var anime = [
-{nome:"Black Clover", date:"2017-10-03 13:00:00", episodi:103, bkgImage:"url('images/anime_bk/Black-Clover.png')"},
-{nome:"Sword Art Online: Alicization", date:"2018-10-06 21:00:00", episodi:999999, bkgImage:"url('images/anime_bk/Sword-Art-Online-Alicization.png')"}, //TODO: numero episodi ignoto
-{nome:"Tensei shitara Slime Datta Ken", date:"2018-10-01 17:30:00", episodi:25, bkgImage:"url('images/anime_bk/Tensei-shitara-Slime-Datta-Ken.jpg')"},
-{nome:"The Rising of the Shield Hero", date:"2019-01-09 17:30:00", episodi:25, bkgImage:"url('images/anime_bk/The-Rising-of-the-Shield-Hero.jpg')"},
-{nome:"Dororo", date:"2019-01-09 18:00:00", episodi:999999, bkgImage:"url('images/anime_bk/Dororo.jpg')"}, //TODO: numero episodi ignoto
-{nome:"The Promised Neverland", date:"2019-01-10 20:00:00", episodi:12, bkgImage:"url('images/anime_bk/The-Promised-Neverland.png')"},
-{nome:"Kakegurui XX", date:"2019-01-08 18:00:00", episodi:999999, bkgImage:"url('images/anime_bk/Kakegurui-XX.png')"}, //TODO: numero episodi ignoto
-{nome:"Toaru Majutsu no Index III", date:"2018-10-05 17:00:00", episodi:26, bkgImage:"url('images/anime_bk/Toaru-Majutsu-no-Index-III.jpg')"},
-{nome:"Date A Live 3", date:"2019-01-13 12:00:00", episodi:26, bkgImage:"url('images/anime_bk/Date-A-Live-3.jpg')"},
-{nome:"JoJo no Kimyou na Bouken: Ougon no Kaze", date:"2018-10-05 21:00:00", episodi:39, bkgImage:"url('images/anime_bk/JoJo.jpg')"},
-{nome:"Mob Psycho 100", date:"2019-01-07 18:00:00", episodi:999999, bkgImage:"url('images/anime_bk/Mob-Psycho-100.png')"}, //TODO: numero episodi ignoto
-{nome:"Kaguya-sama wa Kokurasetai", date:"2019-01-13 20:00:00", episodi:12, bkgImage:"url('images/anime_bk/Kaguya-sama-wa-Kokurasetai.jpg')"}
-];
-
+var AnimeTOT = [];
 var anime_selezionato = 0;
 
 
 $(window).load(function(){
-     $('.preloader').fadeOut('slow');
+	makeAnimeData();
+	setTimeout(function(){
+     $('.preloader').fadeOut('slow')
+     },1000);
 });
 
 
@@ -72,41 +61,36 @@ $(window).load(function(){
 });
 /* END ------------------------------------------------------- */
 
-$('#countdown').countdown({
 
-	//date: "March 13, 2019 17:30:00",
-	date : get_data(),
-	render: function(data) {
-		//console.log(data);
-		if(data.days == 0 && data.hours == 0 && data.min == 0 && data.sec == 0){
-			location.reload(true);
-		}
-	  var el = $(this.el);
-	  el.empty()
-	    //.append("<div>" + this.leadingZeros(data.years, 4) + "<span>years</span></div>")
-	    .append("<div>" + this.leadingZeros(data.days, 2) + " <span>days</span></div>")
-	    .append("<div>" + this.leadingZeros(data.hours, 2) + " <span>hrs</span></div>")
-	    .append("<div>" + this.leadingZeros(data.min, 2) + " <span>min</span></div>")
-	    .append("<div>" + this.leadingZeros(data.sec, 2) + " <span>sec</span></div>");
-	}
-});
+function makeAnimeData(){
 
-// calcolo giorni ed errori anime-------------------------------------------------
+var anime = [];
+var i = 0;
 
-
-
-function get_data(){  //funzione principale
-	add_days();
-	riordina_array();
-	//controllo_array();
-	possibili_errori();
-	costruzione_navigator();
-	write_data();
-	var ritorno_data = new Date(anime[anime_selezionato].date)
-	return ritorno_data;
+	
+	db.collection("anime")
+	.get()
+	.then(snapshot => {
+		snapshot.forEach(function (doc) {
+			anime.push({nome: doc.data().nome, date: new Date(doc.data().date.seconds * 1000), episodi: doc.data().episodi ,bkgImage: doc.data().bkgImage});
+        	i++;
+    	});
+    	return Promise.all(anime);
+  	})
+  	.then(function start(values) {
+  		anime = riordina_array(add_days(values));
+  		AnimeTOT = anime;
+  		possibili_errori(anime);
+  		costruzione_navigator(anime);
+  		write_data(anime);
+  		setCountdown(anime);
+ 	})
+	.catch(function(error) {
+        console.log("Error getting documents: ", error);
+    });
 }
 
-function add_days(){ //aggiunge 7 giorni ad ogni anime per farlo avvicinare a Now per un numero di volte uguale al numero degli episodi
+function add_days(anime){ //aggiunge 7 giorni ad ogni anime per farlo avvicinare a Now per un numero di volte uguale al numero degli episodi
 	var now = new Date();
 	var data_anime = new Date();
 	for (var i = 0; i < anime.length; i++) {
@@ -120,27 +104,33 @@ function add_days(){ //aggiunge 7 giorni ad ogni anime per farlo avvicinare a No
 			}
 		}
 	}
+	return anime;
 }
 
-function riordina_array(){
+function riordina_array(anime){
 	anime.sort(function(a,b){
   		// Turn your strings into dates, and then subtract them
   		// to get a value that is either negative, positive, or zero.
  	 	return new Date(b.date) - new Date(a.date);
 	});
 	anime.reverse();
+	return anime;
 }
 
-function write_data(){
+function write_data(anime){
 	var title = document.getElementById("titolo_anime");
 	var sub_title = document.getElementById("seguente");
 	var background = document.getElementById("sfondo");
-	title.innerHTML = anime[0].nome;
-	sub_title.innerHTML = "A seguire: " + anime[anime_selezionato + 1].nome;
+	title.innerHTML = anime[anime_selezionato].nome;
+	if(anime_selezionato == anime.length - 1){
+		sub_title.innerHTML = "A seguire: " + anime[0].nome;
+	}else{
+		sub_title.innerHTML = "A seguire: " + anime[anime_selezionato + 1].nome;
+	}
 	background.style.backgroundImage  = anime[anime_selezionato].bkgImage;
 }
 
-function possibili_errori(){
+function possibili_errori(anime){
 	var anime1 = new Date();
 	var anime2 = new Date();
 	var errori = [];
@@ -160,18 +150,22 @@ function possibili_errori(){
 }
 
 function anime_check(){
-	for (var i = 0; i < anime.length; i++) {
-		console.log("Anime:", anime[i].nome, "\nDate:", anime[i].date);
-	}
+	/*for (var i = 0; i < AnimeTOT.length; i++) {
+		console.log("Anime:", AnimeTOT[i].nome, "\nDate:", AnimeTOT[i].date);
+	}*/
+	return AnimeTOT;
 }
 
-function costruzione_navigator(){
+function costruzione_navigator(anime){
 	for (var i = 0; i < anime.length; i++) {
 		var a = document.createElement("A");
 		var text = document.createTextNode(anime[i].nome);
 		a.appendChild(text);
 		a.setAttribute("class", "mdl-navigation__link");
-
+		a.setAttribute("id", i);
+		a.addEventListener("click", function(){
+			changeAnime(this.id);
+		});
 		document.getElementById("navigation").appendChild(a);
 		if(i == 0){
 			var succ = document.createElement("SPAN");
@@ -187,8 +181,66 @@ function costruzione_navigator(){
 	}
 }
 
-/*function change_anime(n){
-	anime_selezionato = n;
-	location.reload(true);
-	
-}*/
+function writeAnimeData(nome, date, episodi, bkgImage) { //scrittura anime sul database di firebase
+	db.collection("anime").doc(nome).set({
+		nome: nome,
+		date: firebase.firestore.Timestamp.fromDate(new Date(date)),
+		episodi: episodi,
+		bkgImage: bkgImage
+	})
+	.then(function() {
+		console.log("Document successfully written!");
+	})
+	.catch(function(error) {
+		console.error("Error writing document: ", error);
+	});
+}
+
+var CountdownInterval;
+
+function setCountdown(anime){
+
+	var countDownDate = new Date(anime[anime_selezionato].date).getTime();
+	var days_span = document.createElement("SPAN");
+	var hours_span = document.createElement("SPAN");
+	var minutes_span = document.createElement("SPAN");
+	var seconds_span = document.createElement("SPAN");
+	var days_text = document.createTextNode("days");
+	var hours_text = document.createTextNode("hours");
+	var minutes_text = document.createTextNode("minutes");
+	var seconds_text = document.createTextNode("seconds");
+	countdownForm = document.getElementById("countdown");
+	days_span.appendChild(days_text);
+	hours_span.appendChild(hours_text);
+	minutes_span.appendChild(minutes_text);
+	seconds_span.appendChild(seconds_text);
+
+	CountdownInterval = setInterval(timer, 100);
+
+	function timer() {
+		var now = new Date().getTime();
+		var distance = countDownDate - now;
+		var days = String(Math.floor(distance / (1000 * 60 * 60 * 24)));
+  		var hours = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+  		var minutes = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
+  		var seconds = String(Math.floor((distance % (1000 * 60)) / 1000));
+
+  		if(distance == 0){
+  			makeAnimeData();
+  		}
+
+  		var block = "<div>" + days.padStart(2,'0') + "<span> days</span></div>" + 
+					"<div>" + hours.padStart(2,'0') + "<span> hrs</span></div>" + 
+					"<div>" + minutes.padStart(2,'0') + "<span> min</span></div>" + 
+					"<div>" + seconds.padStart(2,'0') + "<span> sec</span></div>";
+  		
+		countdownForm.innerHTML = block;
+	};
+}
+
+function changeAnime(n){
+	clearInterval(CountdownInterval);
+	anime_selezionato = Number(n);
+	write_data(AnimeTOT);
+  	setCountdown(AnimeTOT);
+}
