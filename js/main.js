@@ -127,7 +127,12 @@ function write_data(anime){
 	}else{
 		sub_title.innerHTML = "A seguire: " + anime[anime_selezionato + 1].nome;
 	}
-	background.style.backgroundImage  = anime[anime_selezionato].bkgImage;
+	storage.ref().child(anime[anime_selezionato].bkgImage).getDownloadURL().then(function(url) {
+		var bkg = "url('" + url + "')";
+		console.log(bkg);
+  		background.style.backgroundImage  = bkg;
+	});
+	//background.style.backgroundImage  = anime[anime_selezionato].bkgImage;
 }
 
 function possibili_errori(anime){
