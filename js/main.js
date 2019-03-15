@@ -232,7 +232,7 @@ function setCountdown(anime){
   		var seconds = String(Math.floor((distance % (1000 * 60)) / 1000));
 
   		if(distance == 0){
-  			makeAnimeData();
+  			location.reload(true);
   		}
 
   		var block = "<div>" + days.padStart(2,'0') + "<span> days</span></div>" + 
