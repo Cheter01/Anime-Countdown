@@ -80,7 +80,8 @@ var i = 0;
   	.then(function start(values) {
   		anime = riordina_array(add_days(values));
   		AnimeTOT = anime;
-  		possibili_errori(anime);
+  		//possibili_errori();
+  		//anime_check();
   		costruzione_navigator(anime);
   		write_data(anime);
   		setCountdown(anime);
@@ -129,25 +130,25 @@ function write_data(anime){
 	}
 	storage.ref().child(anime[anime_selezionato].bkgImage).getDownloadURL().then(function(url) {
 		var bkg = "url('" + url + "')";
-		console.log(bkg);
+		//console.log(bkg);
   		background.style.backgroundImage  = bkg;
 	});
 	//background.style.backgroundImage  = anime[anime_selezionato].bkgImage;
 }
 
-function possibili_errori(anime){
+function possibili_errori(){
 	var anime1 = new Date();
 	var anime2 = new Date();
 	var errori = [];
 
-	for (var i = 0; i < anime.length; i++) {
-		for (var j = 0; j < anime.length; j++) {
-			anime1.setTime(Date.parse(anime[i].date));
-			anime2.setTime(Date.parse(anime[j].date));
+	for (var i = 0; i < AnimeTOT.length; i++) {
+		for (var j = 0; j < AnimeTOT.length; j++) {
+			anime1.setTime(Date.parse(AnimeTOT[i].date));
+			anime2.setTime(Date.parse(AnimeTOT[j].date));
 			if(Math.abs(anime1.getTime() - anime2.getTime()) <= 1800000 && i != j){  //1800000 = 30 minuti
-				 if(errori != anime[i].nome){
-				 	errori += anime[i].nome
-				 	console.log("!!Possibile errore!!\nAnime:", anime[i].nome, "\nDate:", anime1.toString());
+				 if(errori != AnimeTOT[i].nome){
+				 	errori += AnimeTOT[i].nome
+				 	console.log("!!Possibile errore!!\nAnime:", AnimeTOT[i].nome, "\nDate:", anime1.toString());
 				}
 			}
 		}
