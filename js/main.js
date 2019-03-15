@@ -3,10 +3,10 @@ var anime_selezionato = 0;
 
 
 $(window).load(function(){
-	makeAnimeData();
-	setTimeout(function(){
+	//makeAnimeData();
+	/*setTimeout(function(){
      $('.preloader').fadeOut('slow')
-     },1000);
+     },1000);*/
 });
 
 
