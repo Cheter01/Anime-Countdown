@@ -109,7 +109,7 @@ function add_days(anime){ //aggiunge 7 giorni ad ogni anime per farlo avvicinare
 	var data_anime = new Date();
 	for (var i = 0; i < anime.length; i++) {
 		data_anime.setTime(Date.parse(anime[i].date));
-		for (var j = 0; j < anime[i].episodi; j++) {
+		for (var j = 0; j < anime[i].episodi - 1; j++) {
 			if(data_anime < now){
 				data_anime.setDate(data_anime.getDate() + 7);
 				anime[i].date = data_anime.toString();
