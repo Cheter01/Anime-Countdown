@@ -1,0 +1,15 @@
+{
+  "short_name": "Anime Countdown",
+  "name": "Anime Countdown",
+  "icons": [
+    {
+      "src":"images/wait.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/?utm_source=homescreen",
+  "background_color": "#fff",
+  "theme_color": "#222222",
+  "display": "fullscreen"
+}
