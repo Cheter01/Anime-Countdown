@@ -97,6 +97,7 @@ function elimina_vecchi_elementi(anime){
 	for (var i = 0; i < anime.length; i++) {
 		data_anime.setTime(Date.parse(anime[i].date));
 		if(data_anime < now){
+			console.log("!!ANIME CANCELLATO!!\nnome: " + anime[i].nome);
 			anime.splice(i, 1);  //cancella l'elemento nella posizione i perchè ormai è finita la stagione
 		}
 	}
