@@ -8,7 +8,9 @@
       "type": "image/png"
     }
   ],
-  "start_url": "/?utm_source=homescreen",
+  "lang": "it",
+  "orientation": "portrait-primary",
+  "start_url": "",
   "background_color": "#fff",
   "theme_color": "#222222",
   "display": "fullscreen"
