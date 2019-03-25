@@ -78,7 +78,7 @@ var i = 0;
     	return Promise.all(anime);
   	})
   	.then(function start(values) {
-  		anime = riordina_array(add_days(values));
+  		anime = riordina_array(elimina_vecchi_elementi(add_days(values)));
   		AnimeTOT = anime;
   		//possibili_errori();
   		//anime_check();
@@ -89,6 +89,18 @@ var i = 0;
 	.catch(function(error) {
         console.log("Error getting documents: ", error);
     });
+}
+
+function elimina_vecchi_elementi(anime){
+	var now = new Date();
+	var data_anime = new Date();
+	for (var i = 0; i < anime.length; i++) {
+		data_anime.setTime(Date.parse(anime[i].date));
+		if(data_anime < now){
+			anime.splice(i, 1);  //cancella l'elemento nella posizione i perchè ormai è finita la stagione
+		}
+	}
+	return anime;
 }
 
 function add_days(anime){ //aggiunge 7 giorni ad ogni anime per farlo avvicinare a Now per un numero di volte uguale al numero degli episodi
@@ -231,7 +243,7 @@ function setCountdown(anime){
   		var minutes = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
   		var seconds = String(Math.floor((distance % (1000 * 60)) / 1000));
 
-  		if(distance == 0){
+  		if(distance <= 0){
   			location.reload(true);
   		}
 
